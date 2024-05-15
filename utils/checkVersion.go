@@ -11,7 +11,7 @@ import (
 
 func CheckVersion(currentVersion string) {
 	// Handles checking if there is an update available for the bot
-	upToDate, githubVersion, err := botVersonHandler(currentVersion)
+	upToDate, githubVersion, err := serverVersonHandler(currentVersion)
 	if err != nil {
 		malm.Error("%s", err)
 	}
@@ -30,7 +30,7 @@ func CheckVersion(currentVersion string) {
 // Return version on system
 // Return version on github
 // return error
-func botVersonHandler(current string) (bool, string, error) {
+func serverVersonHandler(current string) (bool, string, error) {
 
 	githubVersion, err := githubVersion()
 
