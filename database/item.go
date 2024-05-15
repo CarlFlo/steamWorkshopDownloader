@@ -8,8 +8,8 @@ import (
 
 type WorkshopItem struct {
 	gorm.Model
-	AppID      string `json:"app_id" gorm:"uniqueIndex"`
-	WorkshopID string `json:"workshop_id"`
+	AppID      string `json:"app_id"`
+	WorkshopID string `json:"workshop_id" gorm:"uniqueIndex"`
 
 	ItemName     string `json:"item_name"`
 	LastUpdated  string `json:"last_updated"`
@@ -46,6 +46,6 @@ func (i *WorkshopItem) DoesItemExist(WorkshopID string) bool {
 	return count == 1
 }
 
-func (i *WorkshopItem) QueryItemByWorkshopID(workshopID string) {
-	DB.Table("items").Where("workshop_id = ?", workshopID).First(&i)
+func (i *WorkshopItem) QueryItemByWorkshopID(workshopID string) error {
+	return DB.Table("items").Where("workshop_id = ?", workshopID).First(&i).Error
 }

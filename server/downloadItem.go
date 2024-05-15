@@ -6,23 +6,19 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/CarlFlo/malm"
 	"github.com/CarlFlo/steamWorkshopDownloader/database"
 	steamworkshop "github.com/CarlFlo/steamWorkshopDownloader/steamWorkshop"
 )
 
-func getItemPipeline(fi *FileInfo) (*database.WorkshopItem, error) {
+func prepareWorkshopItem(fi *FileInfo) (*database.WorkshopItem, error) {
 
 	// Look in the cache
 
-	var workshopData *database.WorkshopItem
-	workshopData.QueryItemByWorkshopID(fi.WorkshopID)
-
-	/*
-		workshopData, err := steamworkshop.ParseWorkshopURL(fi.Url, fi.WorkshopID)
-		if err != nil {
-			return nil, err
-		}
-	*/
+	var workshopData database.WorkshopItem
+	if err := workshopData.QueryItemByWorkshopID(fi.WorkshopID); err != nil {
+		malm.Error("Could not fetch '%s' from database. Reason: %v", fi.WorkshopID, err)
+	}
 
 	item, err := steamworkshop.DownloadWorkshopItem(workshopData.GetCommand())
 	if err != nil {
@@ -34,7 +30,7 @@ func getItemPipeline(fi *FileInfo) (*database.WorkshopItem, error) {
 		return nil, err
 	}
 
-	return workshopData, nil
+	return &workshopData, nil
 }
 
 // zipFolder creates a zip archive of the specified folder.

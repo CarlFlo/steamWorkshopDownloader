@@ -1,3 +1,5 @@
+localStorage.clear();
+
 document.addEventListener("DOMContentLoaded", function() {
     const inputField = document.getElementById("inputText");
     const submitButton = document.querySelector("button");

@@ -34,22 +34,25 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	fi := &FileInfo{}
 	fi.New(r.FormValue("inputText"))
 
-	var workshopData *database.WorkshopItem
+	var workshopData database.WorkshopItem
 
 	// Check if the file is already downloaded and zipped
 	if checkCache(fi) {
-		// Load cached workshopData data
-		workshopData = LoadWorkshopData(fi.WorkshopID)
+		// Load cached workshopData data. workshopData cant be a pointer
+		workshopData.QueryItemByWorkshopID(fi.WorkshopID)
+
 	} else {
 		// No zip file with that ID in the cache
 		var err error
 		// TODO: Remake function getting info about the item and downloading the item should be seperated. Because we want to display info about the workshop url as fast as possible to the user
-		workshopData, err = getItemPipeline(fi)
+		workshopDataPtr, err := prepareWorkshopItem(fi)
 		if err != nil {
 			http.Error(w, "Soemthing went wrong.", http.StatusInternalServerError)
 			malm.Error("could not fetch information about the workshop item. %v", err)
 			return
 		}
+		// Janky code
+		workshopData = *workshopDataPtr
 	}
 
 	// So VSC stops complaining about unused variables...

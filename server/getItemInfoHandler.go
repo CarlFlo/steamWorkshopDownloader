@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/CarlFlo/malm"
+	"github.com/CarlFlo/steamWorkshopDownloader/database"
 	steamworkshop "github.com/CarlFlo/steamWorkshopDownloader/steamWorkshop"
 )
 
@@ -35,14 +36,24 @@ func getItemInfoHandler(w http.ResponseWriter, r *http.Request) {
 	fi := &FileInfo{}
 	fi.New(r.FormValue("inputText"))
 
-	workshopData, err := steamworkshop.ParseWorkshopURL(fi.Url, fi.WorkshopID)
-	if err != nil {
-		malm.Error("%v", err)
-		return
-	}
+	// Check cache
 
-	// Save object to database
-	workshopData.Save()
+	var workshopData database.WorkshopItem
+	if workshopData.DoesItemExist(fi.WorkshopID) {
+
+		workshopData.QueryItemByWorkshopID(fi.WorkshopID)
+
+	} else {
+		workshopDataPtr, err := steamworkshop.ParseWorkshopURL(fi.Url, fi.WorkshopID)
+		if err != nil {
+			malm.Error("%v", err)
+			return
+		}
+
+		// Save object to database
+		workshopData = *workshopDataPtr
+		workshopData.Save()
+	}
 
 	// Marshal the struct into JSON
 	jsonData, err := json.Marshal(workshopData)

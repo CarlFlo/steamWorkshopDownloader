@@ -3,7 +3,6 @@ package steamworkshop
 import (
 	"fmt"
 
-	"github.com/CarlFlo/malm"
 	"github.com/CarlFlo/steamWorkshopDownloader/database"
 )
 
@@ -52,8 +51,6 @@ func visitPage(url string) (*database.WorkshopItem, error) {
 	} else if len(info.PreviewImage) == 0 {
 		return nil, errMissingPreviewImage
 	}
-
-	malm.Info("name: %s", info.CreatorName)
 
 	return info, err
 }
