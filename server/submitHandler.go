@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/CarlFlo/malm"
-	"github.com/CarlFlo/steamWorkshopDownloader/database"
 )
 
 func submitHandler(w http.ResponseWriter, r *http.Request) {
@@ -34,29 +33,16 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	fi := &FileInfo{}
 	fi.New(r.FormValue("inputText"))
 
-	var workshopData database.WorkshopItem
-
 	// Check if the file is already downloaded and zipped
-	if checkCache(fi) {
-		// Load cached workshopData data. workshopData cant be a pointer
-		workshopData.QueryItemByWorkshopID(fi.WorkshopID)
-
-	} else {
+	if !lookForFileOnDisk(fi) {
 		// No zip file with that ID in the cache
-		var err error
-		// TODO: Remake function getting info about the item and downloading the item should be seperated. Because we want to display info about the workshop url as fast as possible to the user
-		workshopDataPtr, err := prepareWorkshopItem(fi)
+		_, err := prepareWorkshopItem(fi)
 		if err != nil {
-			http.Error(w, "Soemthing went wrong.", http.StatusInternalServerError)
+			http.Error(w, "Something went wrong.", http.StatusInternalServerError)
 			malm.Error("could not fetch information about the workshop item. %v", err)
 			return
 		}
-		// Janky code
-		workshopData = *workshopDataPtr
 	}
-
-	// So VSC stops complaining about unused variables...
-	workshopData.GetCommand()
 
 	file, err := os.Open(fi.ZipFilePath)
 	if err != nil {

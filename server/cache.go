@@ -2,12 +2,10 @@ package server
 
 import (
 	"os"
-
-	"github.com/CarlFlo/steamWorkshopDownloader/database"
 )
 
 // Returns true if the file exists in the cache
-func checkCache(fi *FileInfo) bool {
+func lookForFileOnDisk(fi *FileInfo) bool {
 
 	return fileExists(fi.ZipFilePath)
 }
@@ -18,10 +16,4 @@ func fileExists(path string) bool {
 		return false
 	}
 	return err == nil
-}
-
-func LoadWorkshopData(itemID string) *database.WorkshopItem {
-
-	// Check database
-	return &database.WorkshopItem{}
 }

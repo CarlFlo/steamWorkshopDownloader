@@ -14,7 +14,6 @@ import (
 func prepareWorkshopItem(fi *FileInfo) (*database.WorkshopItem, error) {
 
 	// Look in the cache
-
 	var workshopData database.WorkshopItem
 	if err := workshopData.QueryItemByWorkshopID(fi.WorkshopID); err != nil {
 		malm.Error("Could not fetch '%s' from database. Reason: %v", fi.WorkshopID, err)
