@@ -44,11 +44,12 @@ func getWorkshopPageInfo(url string) (*WorkshopData, error) {
 		itemInfo.PreviewImage = strings.Split(previewUrl, "?")[0]
 	})
 
-	// Selector for PreviewImage_backup
+	// Backup for PreviewImage above
 	c.OnHTML("#previewImage", func(e *colly.HTMLElement) {
-
-		previewUrl := e.Attr("src")
-		itemInfo.PreviewImage = strings.Split(previewUrl, "?")[0]
+		if len(itemInfo.PreviewImage) == 0 {
+			previewUrl := e.Attr("src")
+			itemInfo.PreviewImage = strings.Split(previewUrl, "?")[0]
+		}
 	})
 
 	err := c.Visit(url)

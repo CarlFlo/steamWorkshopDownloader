@@ -15,7 +15,9 @@ func CheckUrlInput(url string) error {
 		return errNoWorkshopURLProvided
 	}
 
-	r := regexp.MustCompile(`^https:\/\/steamcommunity\.com\/sharedfiles\/filedetails\/\?id=\d+$`)
+	// the url is later processed using the net/url package to extract the id from the url
+
+	r := regexp.MustCompile(`^https:\/\/steamcommunity\.com\/sharedfiles\/filedetails\/\?id=\d+`)
 	if !r.MatchString(url) {
 		return fmt.Errorf("invalid workshop URL '%s'", url)
 	}

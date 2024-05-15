@@ -7,3 +7,8 @@
 - Workshop item that require a Steam account login with an account that owns the game
 
 * Check filesize before downloading. Provide the steamcmd command if the file is too big
+
+
+
+# Webpage
+- Everytime an item is added and successfully identified. Add it to a list. This will require some rework of the download code

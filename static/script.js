@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const submitButton = document.querySelector("button");
     const responseDiv = document.getElementById("response");
 
-    const urlRegex = /^https:\/\/steamcommunity\.com\/sharedfiles\/filedetails\/\?id=\d+$/;
+    const urlRegex = /^https:\/\/steamcommunity\.com\/sharedfiles\/filedetails\/\?id=\d+/;
     let debounceTimeout;
 
     inputField.addEventListener("input", handleInputChange);
@@ -12,7 +12,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function handleInputChange() {
         clearTimeout(debounceTimeout);
         debounceTimeout = setTimeout(() => {
-            const inputValue = inputField.value;
+            let inputValue = inputField.value;
+            
+            inputValue = urlRegex.exec(inputValue)[0];
+            
             if (urlRegex.test(inputValue)) {
                 verifyInput(inputValue);
             } else {
@@ -50,9 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Hide the object display section if there is no data
             objectDisplay.style.display = 'none';
         }
-
-        console.log(data)
-
+        
         const itemData = {
             name: data.item_name,
             lastUpdated: data.last_updated,
