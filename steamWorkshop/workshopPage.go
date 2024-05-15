@@ -3,13 +3,14 @@ package steamworkshop
 import (
 	"strings"
 
+	"github.com/CarlFlo/steamWorkshopDownloader/database"
 	"github.com/gocolly/colly"
 )
 
-func getWorkshopPageInfo(url string) (*WorkshopData, error) {
+func getWorkshopPageInfo(url string) (*database.WorkshopItem, error) {
 	c := colly.NewCollector()
 
-	itemInfo := &WorkshopData{}
+	itemInfo := &database.WorkshopItem{}
 
 	// Selector for AppID
 	c.OnHTML("#ig_bottom > div.breadcrumbs > a:nth-child(1)", func(e *colly.HTMLElement) {
@@ -30,7 +31,7 @@ func getWorkshopPageInfo(url string) (*WorkshopData, error) {
 
 	// Selector for CreatedBy
 	c.OnHTML("div.rightDetailsBlock > div > div > a", func(e *colly.HTMLElement) {
-		itemInfo.CreatedBy = e.Attr("href")
+		itemInfo.CreatorLink = e.Attr("href")
 	})
 
 	//

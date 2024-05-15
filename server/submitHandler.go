@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/CarlFlo/malm"
-	steamworkshop "github.com/CarlFlo/steamWorkshopDownloader/steamWorkshop"
+	"github.com/CarlFlo/steamWorkshopDownloader/database"
 )
 
 func submitHandler(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	fi := &FileInfo{}
 	fi.New(r.FormValue("inputText"))
 
-	var workshopData *steamworkshop.WorkshopData
+	var workshopData *database.WorkshopItem
 
 	// Check if the file is already downloaded and zipped
 	if checkCache(fi) {

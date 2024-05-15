@@ -41,6 +41,9 @@ func getItemInfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Save object to database
+	workshopData.Save()
+
 	// Marshal the struct into JSON
 	jsonData, err := json.Marshal(workshopData)
 	if err != nil {

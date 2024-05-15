@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
             name: data.item_name,
             lastUpdated: data.last_updated,
             creatorName: data.creator_name,
-            creatorLink: data.created_by,
+            creatorLink: data.creator_link,
             fileSize: data.file_size,
             previewImage: data.preview_image
         };

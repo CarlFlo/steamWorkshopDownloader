@@ -4,24 +4,8 @@ import (
 	"fmt"
 
 	"github.com/CarlFlo/malm"
+	"github.com/CarlFlo/steamWorkshopDownloader/database"
 )
-
-type WorkshopData struct {
-	AppID      string `json:"app_id"`
-	WorkshopID string `json:"workshop_id"`
-
-	ItemName     string `json:"item_name"`
-	LastUpdated  string `json:"last_updated"`
-	CreatedBy    string `json:"created_by"`
-	CreatorName  string `json:"creator_name"`
-	FileSize     string `json:"file_size"`
-	PreviewImage string `json:"preview_image"`
-}
-
-func (item WorkshopData) GetCommand() string {
-
-	return fmt.Sprintf("workshop_download_item %s %s", item.AppID, item.WorkshopID)
-}
 
 var (
 	errFailedToFetchAppID  = fmt.Errorf("failed to fetch the appID")
@@ -33,7 +17,7 @@ var (
 	errMissingPreviewImage = fmt.Errorf("failed to fetch preview image URL")
 )
 
-func ParseWorkshopURL(url, workshopID string) (*WorkshopData, error) {
+func ParseWorkshopURL(url, workshopID string) (*database.WorkshopItem, error) {
 
 	workshopData, err := visitPage(url)
 	if err != nil {
@@ -45,7 +29,7 @@ func ParseWorkshopURL(url, workshopID string) (*WorkshopData, error) {
 	return workshopData, nil
 }
 
-func visitPage(url string) (*WorkshopData, error) {
+func visitPage(url string) (*database.WorkshopItem, error) {
 
 	info, err := getWorkshopPageInfo(url)
 	if err != nil {
@@ -59,7 +43,7 @@ func visitPage(url string) (*WorkshopData, error) {
 		return nil, errMissingItemName
 	} else if len(info.LastUpdated) == 0 {
 		return nil, errMissingLastUpdated
-	} else if len(info.CreatedBy) == 0 {
+	} else if len(info.CreatorLink) == 0 {
 		return nil, errMissingCreatedBy
 	} else if len(info.CreatorName) == 0 {
 		return nil, errMissingCreatorName

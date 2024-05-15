@@ -3,7 +3,7 @@ package server
 import (
 	"os"
 
-	steamworkshop "github.com/CarlFlo/steamWorkshopDownloader/steamWorkshop"
+	"github.com/CarlFlo/steamWorkshopDownloader/database"
 )
 
 // Returns true if the file exists in the cache
@@ -20,8 +20,8 @@ func fileExists(path string) bool {
 	return err == nil
 }
 
-func LoadWorkshopData(itemID string) *steamworkshop.WorkshopData {
+func LoadWorkshopData(itemID string) *database.WorkshopItem {
 
 	// Check database
-	return &steamworkshop.WorkshopData{}
+	return &database.WorkshopItem{}
 }

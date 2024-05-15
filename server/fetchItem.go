@@ -6,10 +6,11 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/CarlFlo/steamWorkshopDownloader/database"
 	steamworkshop "github.com/CarlFlo/steamWorkshopDownloader/steamWorkshop"
 )
 
-func getItemPipeline(fi *FileInfo) (*steamworkshop.WorkshopData, error) {
+func getItemPipeline(fi *FileInfo) (*database.WorkshopItem, error) {
 
 	workshopData, err := steamworkshop.ParseWorkshopURL(fi.Url, fi.WorkshopID)
 	if err != nil {
