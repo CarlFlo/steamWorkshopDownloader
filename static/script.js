@@ -53,11 +53,11 @@ document.addEventListener("DOMContentLoaded", function() {
             // Hide the object display section if there is no data
             objectDisplay.style.display = 'none';
         }
-        
+
         const itemData = {
             name: data.item_name,
             lastUpdated: data.last_updated,
-            creator: "temp",
+            creatorName: data.creator_name,
             creatorLink: data.created_by,
             fileSize: data.file_size,
             previewImage: data.preview_image
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Populate the object display section
         document.getElementById('itemName').textContent = itemData.name;
         document.getElementById('lastUpdated').textContent = `Last Updated: ${itemData.lastUpdated}`;
-        document.getElementById('creator').innerHTML = `Creator: <a id="creatorLink" href="${itemData.creatorLink}" target="_blank">${itemData.creator}</a>`;
+        document.getElementById('creator').innerHTML = `By: <a id="creatorLink" href="${itemData.creatorLink}" target="_blank">${itemData.creatorName}</a>`;
         document.getElementById('fileSize').textContent = `File Size: ${itemData.fileSize}`;
         document.getElementById('previewImage').src = itemData.previewImage;
 

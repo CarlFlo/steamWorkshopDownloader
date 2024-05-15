@@ -33,6 +33,12 @@ func getWorkshopPageInfo(url string) (*WorkshopData, error) {
 		itemInfo.CreatedBy = e.Attr("href")
 	})
 
+	//
+	// Selector for CreatorName
+	c.OnHTML("#ig_bottom > div.breadcrumbs > a:nth-child(5)", func(e *colly.HTMLElement) {
+		itemInfo.CreatorName = strings.TrimSuffix(e.Text, "'s Workshop")
+	})
+
 	// Selector for FileSize
 	c.OnHTML("div.detailsStatsContainerRight > div:nth-child(1)", func(e *colly.HTMLElement) {
 		itemInfo.FileSize = e.Text

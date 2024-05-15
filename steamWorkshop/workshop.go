@@ -2,6 +2,8 @@ package steamworkshop
 
 import (
 	"fmt"
+
+	"github.com/CarlFlo/malm"
 )
 
 type WorkshopData struct {
@@ -11,6 +13,7 @@ type WorkshopData struct {
 	ItemName     string `json:"item_name"`
 	LastUpdated  string `json:"last_updated"`
 	CreatedBy    string `json:"created_by"`
+	CreatorName  string `json:"creator_name"`
 	FileSize     string `json:"file_size"`
 	PreviewImage string `json:"preview_image"`
 }
@@ -25,6 +28,7 @@ var (
 	errMissingItemName     = fmt.Errorf("failed to fetch item name")
 	errMissingLastUpdated  = fmt.Errorf("failed to fetch last updated")
 	errMissingCreatedBy    = fmt.Errorf("failed to fetch created by")
+	errMissingCreatorName  = fmt.Errorf("failed to fetch creator name")
 	errMissingFileSize     = fmt.Errorf("failed to fetch file size")
 	errMissingPreviewImage = fmt.Errorf("failed to fetch preview image URL")
 )
@@ -57,11 +61,15 @@ func visitPage(url string) (*WorkshopData, error) {
 		return nil, errMissingLastUpdated
 	} else if len(info.CreatedBy) == 0 {
 		return nil, errMissingCreatedBy
+	} else if len(info.CreatorName) == 0 {
+		return nil, errMissingCreatorName
 	} else if len(info.FileSize) == 0 {
 		return nil, errMissingFileSize
 	} else if len(info.PreviewImage) == 0 {
 		return nil, errMissingPreviewImage
 	}
+
+	malm.Info("name: %s", info.CreatorName)
 
 	return info, err
 }
