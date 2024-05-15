@@ -6,7 +6,11 @@ import (
 	"regexp"
 
 	"github.com/CarlFlo/malm"
-	"github.com/CarlFlo/steamWorkshopDownloader/config"
+)
+
+var (
+	repositoryUrl = "https://github.com/CarlFlo/steamWorkshopDownloader"
+	versionURL    = "https://raw.githubusercontent.com/CarlFlo/steamWorkshopDownloader/main/main.go"
 )
 
 func CheckVersion(currentVersion string) {
@@ -20,7 +24,7 @@ func CheckVersion(currentVersion string) {
 		malm.Debug("Version %s", currentVersion)
 	} else {
 		malm.Info("New version available at '%s'! New version: '%s'. Your version: '%s'",
-			config.CONFIG.ServerInfo.RepositoryUrl,
+			repositoryUrl,
 			githubVersion,
 			currentVersion)
 	}
@@ -47,7 +51,7 @@ func serverVersonHandler(current string) (bool, string, error) {
 func githubVersion() (string, error) {
 
 	// get URL
-	resp, err := http.Get(config.CONFIG.ServerInfo.VersionURL)
+	resp, err := http.Get(versionURL)
 	if err != nil {
 		return "", err
 	}

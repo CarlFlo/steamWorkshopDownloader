@@ -12,20 +12,14 @@ import (
 var CONFIG *configStruct
 
 type configStruct struct {
-	Port           int        `json:"port"`
-	PathToSteamCMD string     `json:"pathToSteamCMD"`
-	PathToCache    string     `json:"pathToCache"`
-	Database       database   `json:"database"`
-	ServerInfo     serverInfo `json:"serverInfo"`
+	Port           int      `json:"port"`
+	PathToSteamCMD string   `json:"pathToSteamCMD"`
+	PathToCache    string   `json:"pathToCache"`
+	Database       database `json:"database"`
 }
 
 type database struct {
 	FileName string `json:"fileName"`
-}
-
-type serverInfo struct {
-	VersionURL    string `json:"versionURL"`
-	RepositoryUrl string `json:"repositoryUrl"`
 }
 
 // ReloadConfig is a wrapper function for reloading the config. For clarity
@@ -62,10 +56,6 @@ func createConfig() error {
 		PathToCache:    "",
 		Database: database{
 			FileName: "database.db",
-		},
-		ServerInfo: serverInfo{
-			VersionURL:    "https://raw.githubusercontent.com/CarlFlo/steamWorkshopDownloader/main/main.go",
-			RepositoryUrl: "https://github.com/CarlFlo/steamWorkshopDownloader",
 		},
 	}
 
