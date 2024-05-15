@@ -12,10 +12,17 @@ import (
 
 func getItemPipeline(fi *FileInfo) (*database.WorkshopItem, error) {
 
-	workshopData, err := steamworkshop.ParseWorkshopURL(fi.Url, fi.WorkshopID)
-	if err != nil {
-		return nil, err
-	}
+	// Look in the cache
+
+	var workshopData *database.WorkshopItem
+	workshopData.QueryItemByWorkshopID(fi.WorkshopID)
+
+	/*
+		workshopData, err := steamworkshop.ParseWorkshopURL(fi.Url, fi.WorkshopID)
+		if err != nil {
+			return nil, err
+		}
+	*/
 
 	item, err := steamworkshop.DownloadWorkshopItem(workshopData.GetCommand())
 	if err != nil {

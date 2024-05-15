@@ -45,3 +45,7 @@ func (i *WorkshopItem) DoesItemExist(WorkshopID string) bool {
 	DB.Raw("SELECT COUNT(*) FROM items WHERE workshop_id = ?", WorkshopID).Scan(&count)
 	return count == 1
 }
+
+func (i *WorkshopItem) QueryItemByWorkshopID(workshopID string) {
+	DB.Table("items").Where("workshop_id = ?", workshopID).First(&i)
+}
