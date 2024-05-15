@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Web Server</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script defer src="/static/script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Steam Workshop Downloader</h1>
+        
+                <input type="text" id="inputText" name="inputText" placeholder="https://steamcommunity.com/sharedfiles/filedetails/?id=...">
+            
+        <div id="response"></div>
+        <div id="objectDisplay" class="object-display" style="display: none;">
+            <h2 id="itemName">Item Name</h2>
+            <p id="creator">Creator: <a id="creatorLink" href="#" target="_blank">Creator Link</a></p>
+            <p id="lastUpdated">Last Updated: </p>
+            <p id="fileSize">File Size: </p>
+            <img id="previewImage" src="" alt="Preview Image">
+            <form id="myForm">
+                <div class="input-group">
+                    <button id="submitButton" type="submit" disabled>Download</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

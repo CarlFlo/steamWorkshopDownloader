@@ -1,0 +1,9 @@
+* File preview
+- Display info about the workshop item prior to download
+* Caching
+- Cache item name and info in a database
+- handle cache item version
+* Enable ratelimit to stop spamming
+- Workshop item that require a Steam account login with an account that owns the game
+
+* Check filesize before downloading. Provide the steamcmd command if the file is too big
