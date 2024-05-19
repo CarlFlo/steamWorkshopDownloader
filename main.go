@@ -8,7 +8,7 @@ import (
 	"github.com/CarlFlo/steamWorkshopDownloader/utils"
 )
 
-const CurrentVersion = "2024-05-15"
+const CurrentVersion = "2024-05-19"
 
 func init() {
 

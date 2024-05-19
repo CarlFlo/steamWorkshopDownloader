@@ -38,12 +38,10 @@ func getItemInfoHandler(w http.ResponseWriter, r *http.Request) {
 	fi.New(r.FormValue("inputText"))
 
 	// Check cache
-
 	var workshopData database.WorkshopItem
 	if workshopData.DoesItemExist(fi.WorkshopID) {
 
 		workshopData.QueryItemByWorkshopID(fi.WorkshopID)
-
 	} else {
 		workshopDataPtr, err := steamworkshop.ParseWorkshopURL(fi.Url, fi.WorkshopID)
 		if err != nil {
