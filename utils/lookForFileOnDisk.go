@@ -1,13 +1,13 @@
-package server
+package utils
 
 import (
 	"os"
 )
 
 // Returns true if the file exists in the cache
-func lookForFileOnDisk(fi *FileInfo) bool {
+func LookForFileOnDisk(path string) bool {
 
-	return fileExists(fi.ZipFilePath)
+	return fileExists(path)
 }
 
 func fileExists(path string) bool {

@@ -7,6 +7,8 @@ import (
 	"os"
 
 	"github.com/CarlFlo/malm"
+	"github.com/CarlFlo/steamWorkshopDownloader/server/middleware"
+	"github.com/CarlFlo/steamWorkshopDownloader/utils"
 )
 
 func submitHandler(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +24,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := CheckUrlInput(r.FormValue("inputText")); err != nil {
+	if err := middleware.CheckUrlInput(r.FormValue("inputText")); err != nil {
 		http.Error(w, "Invalid URL provided", http.StatusBadRequest)
 		malm.Error("user provided an invalid URL. %v", err)
 		return
@@ -34,9 +36,9 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	fi.New(r.FormValue("inputText"))
 
 	// Check if the file is already downloaded and zipped
-	if !lookForFileOnDisk(fi) {
+	if !utils.LookForFileOnDisk(fi.ZipFilePath) {
 		// No zip file with that ID in the cache
-		_, err := prepareWorkshopItem(fi)
+		_, err := prepareAndDownloadItem(fi)
 		if err != nil {
 			http.Error(w, "Something went wrong.", http.StatusInternalServerError)
 			malm.Error("could not fetch information about the workshop item. %v", err)

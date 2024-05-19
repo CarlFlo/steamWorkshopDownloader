@@ -6,6 +6,7 @@ import (
 
 	"github.com/CarlFlo/malm"
 	"github.com/CarlFlo/steamWorkshopDownloader/database"
+	"github.com/CarlFlo/steamWorkshopDownloader/server/middleware"
 	steamworkshop "github.com/CarlFlo/steamWorkshopDownloader/steamWorkshop"
 )
 
@@ -25,7 +26,7 @@ func getItemInfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := CheckUrlInput(inputURL); err != nil {
+	if err := middleware.CheckUrlInput(inputURL); err != nil {
 		http.Error(w, "Invalid input provided", http.StatusBadRequest)
 		malm.Error("user provided an invalid URL. %v", err)
 		return
