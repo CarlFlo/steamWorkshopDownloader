@@ -37,7 +37,7 @@ func connectToDB() error {
 		return err
 	}
 
-	var modelList = []interface{}{
+	var databaseTables = []interface{}{
 		&WorkshopItem{},
 	}
 
@@ -45,16 +45,16 @@ func connectToDB() error {
 
 		malm.Info("Resetting database...")
 
-		type tmp interface {
+		type tableNameInterface interface {
 			TableName() string
 		}
 
-		for _, e := range modelList {
-			table := e.(tmp).TableName()
+		for _, e := range databaseTables {
+			table := e.(tableNameInterface).TableName()
 			DB.Exec(fmt.Sprintf("DROP TABLE %s", table))
 		}
 	}
 
 	// Remeber to add new tables to the tableList and not just here!
-	return DB.AutoMigrate(modelList...)
+	return DB.AutoMigrate(databaseTables...)
 }

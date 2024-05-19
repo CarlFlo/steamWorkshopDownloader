@@ -52,9 +52,9 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 
 	// The operation is done so we can remove the workshop ID from the map
 	clearMutex(fi.WorkshopID)
-
 	workshopMutex.Unlock()
 
+	// Read the file
 	file, err := os.Open(fi.ZipFilePath)
 	if err != nil {
 		http.Error(w, "File not found.", http.StatusNotFound)
@@ -66,19 +66,11 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	// Set the headers
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", fi.ZipFileName))
 	w.Header().Set("Content-Type", "application/zip")
-	w.Header().Set("Content-Length", fmt.Sprintf("%d", fileSize(fi.ZipFilePath)))
+	w.Header().Set("Content-Length", fmt.Sprintf("%d", utils.FileSize(fi.ZipFilePath)))
 
 	// Stream the file content to the response
 	if _, err := io.Copy(w, file); err != nil {
 		http.Error(w, "Error serving file.", http.StatusInternalServerError)
 	}
 
-}
-
-func fileSize(filepath string) int64 {
-	info, err := os.Stat(filepath)
-	if err != nil {
-		return -1
-	}
-	return info.Size()
 }
