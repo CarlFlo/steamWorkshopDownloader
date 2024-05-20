@@ -37,7 +37,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 
 	// This is to ensure there are no duplicates processing at the same time
 	workshopMutex := getOrCreateMutex(fi.WorkshopID)
-	workshopMutex.mu.Lock()
+	workshopMutex.wMu.Lock()
 
 	// Check if the file is already downloaded and zipped
 	if !utils.LookForFileOnDisk(fi.ZipFilePath) {
@@ -51,7 +51,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// The operation is done so we can remove the workshop ID from the map
-	workshopMutex.mu.Unlock()
+	workshopMutex.wMu.Unlock()
 	releaseMutex(fi.WorkshopID)
 
 	// Read the file
