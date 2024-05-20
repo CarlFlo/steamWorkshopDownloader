@@ -2,24 +2,42 @@ package server
 
 import "sync"
 
+type workshopMutex struct {
+	mu          *sync.Mutex
+	activeCount uint
+}
+
 var (
 	mu         sync.Mutex
-	processing = make(map[string]*sync.Mutex)
+	processing = make(map[string]*workshopMutex)
 )
 
-func getOrCreateMutex(workshopID string) *sync.Mutex {
+func getOrCreateMutex(workshopID string) *workshopMutex {
 	mu.Lock()
 	defer mu.Unlock()
 
 	// Create the entry if missing
-	if _, exists := processing[workshopID]; !exists {
-		processing[workshopID] = &sync.Mutex{}
+	if wm, exists := processing[workshopID]; exists {
+		wm.activeCount++
+		return wm
 	}
-	return processing[workshopID]
+
+	wm := &workshopMutex{
+		mu:          &sync.Mutex{},
+		activeCount: 1,
+	}
+	processing[workshopID] = wm
+	return wm
 }
 
-func clearMutex(workshopID string) {
+func releaseMutex(workshopID string) {
 	mu.Lock()
-	delete(processing, workshopID)
-	mu.Unlock()
+	defer mu.Unlock()
+
+	if wm, exists := processing[workshopID]; exists {
+		wm.activeCount--
+		if wm.activeCount == 0 {
+			delete(processing, workshopID)
+		}
+	}
 }
