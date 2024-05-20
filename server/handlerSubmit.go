@@ -51,8 +51,9 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// The operation is done so we can remove the workshop ID from the map
-	clearMutex(fi.WorkshopID)
-	workshopMutex.Unlock()
+ workshopMutex.Unlock()
+ clearMutex(fi.WorkshopID)
+	
 
 	// Read the file
 	file, err := os.Open(fi.ZipFilePath)
